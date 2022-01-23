@@ -18,6 +18,7 @@ class ArticleTest extends TestCase
     /** @test */
     public function it_fetches_trending_article()
     {
+        // To use database testing and migrate  [php artisan migrate  --database sqlite_testing]
         // Se usa DatabaseTransactions para no guardar los cambios en la base y siempre mantener la bd limpia de datos de prueba
         // use DatabaseTransactions
 
