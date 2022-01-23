@@ -12,7 +12,7 @@ class ProductTest extends TestCase
     /**
      * ******* Execute test with vendor/bin/phpunit = run all tests********
      * ******* Execute test with vendor/bin/phpunit tests/Feature/ProductTest.php  = run this test only********
-     *  ****** Execute test with vendor/bin/phpunit --filter {specific_method_name}  = run this method only********
+     *  ****** Execute test with vendor/bin/phpunit tests/Feature/ProductTest.php --filter {specific_method_name}  = run this method only********
      */
 
     public function setUp(): void
