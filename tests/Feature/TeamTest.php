@@ -88,6 +88,18 @@ class TeamTest extends TestCase
     }
 
     /** @test */
+    public function when_adding_many_members_at_once_you_still_may_not_exceed_the_max_size()
+    {
+        $this->addMembersToTheTeam(1);
+
+        $users = User::factory(3)->create();
+
+        $this->expectException('Exception');
+
+        $this->team->add($users);
+    }
+
+    /** @test */
     private function addMembersToTheTeam($members)
     {
         for ($i=0; $i < $members; $i++) {
