@@ -35,13 +35,13 @@ class TeamTest extends TestCase
     /** @test */
     public function it_has_maximum_size()
     {
-        $this->addMembersToTheTeam(2);
+        $this->addMembersToTheTeam(3);
 
-        $this->assertEquals('2', $this->team->count());
+        $this->assertEquals(3, $this->team->count());
 
         $this->expectException('Exception');
-        $user3 = User::factory()->create();
-        $this->team->add($user3);
+
+        $this->addMembersToTheTeam(1);
     }
 
     /** @test */
@@ -73,7 +73,7 @@ class TeamTest extends TestCase
 
         $this->team->restart();
 
-        $this->assertEquals(3, $this->team->count());
+        $this->assertEquals(0, $this->team->count());
     }
 
     /** @test */
