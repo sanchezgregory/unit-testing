@@ -2,8 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Models\Post;
-use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
@@ -11,95 +9,79 @@ class LikesTest extends TestCase
 {
     use DatabaseTransactions;
 
+    protected $post;
+
+    public function setUp():void
+    {
+        parent::setUp();
+
+       //  $this->post = Post::factory()->create(); // It's good but, the  helper is better
+
+        /**
+         *  using an own helper and adding it to composer.json. Section files
+         * "autoload-dev": {
+                "psr-4": {
+                "Tests\\": "tests/"
+            },
+            "files": [
+                    "tests/Helpers/functions.php"
+                ]
+            },
+         */
+        $this->post = createPost();
+
+        $this->signIn();
+    }
+
     /** @test */
     public function a_user_can_like_a_post()
     {
-        // given I have a post
-        $post = Post::factory()->create();
-
-        // and a user
-        $user = User::factory()->create();
-
-        // and that user is logged in
-        $this->actingAs($user);
-
-        // when they like a post
-        $post->like();
+        $this->post->like();
 
         // then we should see evidence in the database and the post should be liked
         $this->assertDatabaseHas('likes', [
-            'user_id' => $user->id,
-            'likeable_id' => $post->id,
-            'likeable_type' => get_class($post),
+            'user_id' => $this->user->id,
+            'likeable_id' => $this->post->id,
+            'likeable_type' => get_class($this->post),
         ]);
 
-        $this->assertTrue($post->isLiked());
-
+        $this->assertTrue($this->post->isLiked());
     }
 
     /** @test */
     public function a_user_can_unlike_a_post()
     {
-        // given I have a post
-        $post = Post::factory()->create();
-
-        // and a user
-        $user = User::factory()->create();
-
-        // and that user is logged in
-        $this->actingAs($user);
-
-        // when they like a post
-        $post->like();
-        $post->unlike();
+        $this->post->like();
+        $this->post->unlike();
 
         // then we should see evidence in the database and the post should be liked
         $this->assertDatabaseMissing('likes', [
-            'user_id' => $user->id,
-            'likeable_id' => $post->id,
-            'likeable_type' => get_class($post),
+            'user_id' => $this->user->id,
+            'likeable_id' => $this->post->id,
+            'likeable_type' => get_class($this->post),
         ]);
 
-        $this->assertFalse($post->isLiked());
+        $this->assertFalse($this->post->isLiked());
     }
 
     /** @test */
     public function a_user_may_toggle_a_post_like_status()
     {
-        // given I have a post
-        $post = Post::factory()->create();
-
-        // and a user
-        $user = User::factory()->create();
-
-        // and that user is logged in
-        $this->actingAs($user);
-
         // when they like a post
-        $post->toggle();
+        $this->post->toggle();
 
-        $this->assertTrue($post->isLiked());
+        $this->assertTrue($this->post->isLiked());
 
-        $post->toggle();
+        $this->post->toggle();
 
-        $this->assertFalse($post->isLiked());
+        $this->assertFalse($this->post->isLiked());
     }
 
     /** @test */
     public function a_post_knows_how_many_likes_it_has()
     {
-        // given I have a post
-        $post = Post::factory()->create();
+        $this->post->toggle();
 
-        // and a user
-        $user = User::factory()->create();
-
-        // and that user is logged in
-        $this->actingAs($user);
-
-        // when they like a post
-        $post->toggle();
-
-        $this->assertEquals(1, $post->likesCount);
+        $this->assertEquals(1, $this->post->likesCount);
     }
 }
