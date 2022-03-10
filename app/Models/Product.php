@@ -8,23 +8,24 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     use HasFactory;
+    protected $product_code;
     protected $name;
-    protected $cost;
+    protected $price;
 
-    public function __construct($name, $cost)
+    protected $fillable = ['product_code', 'name', 'price'];
+
+    public function product_code()
     {
-        $this->name = $name;
-        $this->cost = $cost;
+        return $this->product_code;
     }
-
     public function name()
     {
         return $this->name;
     }
 
-    public function cost()
+    public function getPrice()
     {
-        return $this->cost;
+        return $this->price;
     }
 
 }
