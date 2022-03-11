@@ -2,15 +2,21 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-
-class BladeDirective extends Model
+class BladeDirective
 {
-    use HasFactory;
+    protected $cache;
+
+    public function __construct(RussianCache $cache)
+    {
+        $this->cache = $cache;
+    }
+
+    public function setUp($key)
+    {
+        $this->cache->has($key);
+    }
 
     public function foo()
     {
-
     }
 }
